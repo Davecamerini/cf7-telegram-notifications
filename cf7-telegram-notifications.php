@@ -69,7 +69,10 @@ final class CF7_Telegram_Notifications {
 
         add_settings_field(
             'bot_token',
-            __('Bot API Token', 'cf7-telegram-notifications'),
+            $this->get_field_label_with_tooltip(
+                __('Bot API Token', 'cf7-telegram-notifications'),
+                __('Create a bot with @BotFather in Telegram, then copy the HTTP API token (format: 123456789:AA...).', 'cf7-telegram-notifications')
+            ),
             [$this, 'render_bot_token_field'],
             self::MENU_SLUG,
             'cf7_tn_main_section'
@@ -77,7 +80,10 @@ final class CF7_Telegram_Notifications {
 
         add_settings_field(
             'chat_id',
-            __('Channel / Chat ID', 'cf7-telegram-notifications'),
+            $this->get_field_label_with_tooltip(
+                __('Channel / Chat ID', 'cf7-telegram-notifications'),
+                __('Use @channelusername for public channels, or a numeric chat ID for private channels/groups. Make sure your bot is added and can post.', 'cf7-telegram-notifications')
+            ),
             [$this, 'render_chat_id_field'],
             self::MENU_SLUG,
             'cf7_tn_main_section'
@@ -320,6 +326,14 @@ final class CF7_Telegram_Notifications {
             'orderby' => 'title',
             'order' => 'ASC',
         ]);
+    }
+
+    private function get_field_label_with_tooltip(string $label, string $tooltip): string {
+        return sprintf(
+            '%1$s <span class="dashicons dashicons-editor-help" style="font-size:16px;line-height:1.2;vertical-align:middle;color:#2271b1;cursor:help;" title="%2$s" aria-label="%2$s"></span>',
+            esc_html($label),
+            esc_attr($tooltip)
+        );
     }
 
     private function build_message($contact_form, array $posted_data, array $settings): string {
